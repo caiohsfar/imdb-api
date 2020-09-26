@@ -1,7 +1,8 @@
 "use strict";
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Users", {
+    const UserTable = await queryInterface.createTable("User", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,22 +10,36 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
-      email: {
+      passwordHash: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
     });
+
+    return UserTable;
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Users");
+    /**
+     * Add reverting commands here.
+     *
+     * Example:
+     * await queryInterface.dropTable('users');
+     */
+
+    return queryInterface.dropTable("User");
   },
 };
