@@ -6,6 +6,7 @@ module.exports = {
       {
         name: "Caio",
         passwordHash: "ASJKDHASKJDHAKSJ",
+        active: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

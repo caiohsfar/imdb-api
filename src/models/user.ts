@@ -8,6 +8,8 @@ class User extends Model {
 
   public name!: string;
 
+  public active!: boolean;
+
   public password!: string;
 
   public passwordHash!: string;
@@ -29,6 +31,10 @@ User.init(
     password: Sequelize.VIRTUAL,
     passwordHash: Sequelize.STRING,
     email: Sequelize.STRING,
+    active: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true,
+    },
   },
   {
     sequelize: database.connection,

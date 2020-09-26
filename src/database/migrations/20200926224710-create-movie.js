@@ -2,23 +2,22 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const UserTable = await queryInterface.createTable("User", {
+    const UserRoleTable = await queryInterface.createTable("Movie", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      active: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
-      },
       name: {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      passwordHash: {
+      voteAvg: {
+        allowNull: false,
+        type: Sequelize.FLOAT,
+      },
+      description: {
         allowNull: false,
         type: Sequelize.STRING,
       },
@@ -34,7 +33,7 @@ module.exports = {
       },
     });
 
-    return UserTable;
+    return UserRoleTable;
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -45,6 +44,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
 
-    return await queryInterface.dropTable("User");
+    return await queryInterface.dropTable("Movie");
   },
 };
