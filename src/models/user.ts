@@ -1,7 +1,8 @@
 import Sequelize, { Model } from "sequelize";
 import bcrypt from "bcryptjs";
 import database from "../database/connection";
-import Role from "../models/role";
+import Role from "./role";
+import RoleUser from "../models/role_user";
 
 class User extends Model {
   public id!: number;
@@ -19,6 +20,7 @@ class User extends Model {
   public readonly createdAt!: Date;
 
   public readonly updatedAt!: Date;
+  roles: any;
 
   public async checkPassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.passwordHash);
@@ -27,7 +29,7 @@ class User extends Model {
 
 User.init(
   {
-    firstName: Sequelize.STRING,
+    name: Sequelize.STRING,
     password: Sequelize.VIRTUAL,
     passwordHash: Sequelize.STRING,
     email: Sequelize.STRING,
@@ -37,7 +39,7 @@ User.init(
     },
   },
   {
-    sequelize: database.connection,
+    sequelize: database,
   }
 );
 
@@ -49,7 +51,5 @@ User.addHook(
     }
   }
 );
-
-User.belongsToMany(Role, { through: "RoleUser" });
 
 export default User;

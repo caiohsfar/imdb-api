@@ -2,32 +2,24 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const UserRoleTable = await queryInterface.createTable("RoleUser", {
+    const UserRoleTable = await queryInterface.createTable("Movies", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      name: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "User",
-          },
-          key: "id",
-        },
+        type: Sequelize.STRING,
       },
-      role_id: {
+      voteAvg: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "Role",
-          },
-          key: "id",
-        },
+        type: Sequelize.FLOAT,
+      },
+      description: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -45,13 +37,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-
-    return await queryInterface.dropTable("RoleUser");
+    return await queryInterface.dropTable("Movies");
   },
 };

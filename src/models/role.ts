@@ -1,6 +1,5 @@
 import Sequelize, { Model } from "sequelize";
 import database from "../database/connection";
-import User from "../models/user";
 
 class Role extends Model {
   public id!: number;
@@ -17,10 +16,8 @@ Role.init(
     name: Sequelize.STRING,
   },
   {
-    sequelize: database.connection,
+    sequelize: database,
   }
 );
-
-Role.belongsToMany(User, { through: "RoleUser" });
 
 export default Role;

@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import routes from "./routes";
+import Role from "./models/role";
+import User from "./models/user";
 
 class App {
   public server: express.Application;
@@ -9,6 +11,7 @@ class App {
     this.server = express();
     this.setupMiddlewares();
     this.setupRoutes();
+    this.setupDatabaseRelations();
   }
 
   private setupMiddlewares(): void {
@@ -19,6 +22,11 @@ class App {
 
   private setupRoutes(): void {
     this.server.use(routes);
+  }
+
+  private setupDatabaseRelations(): void {
+    Role.belongsToMany(User, { through: "RoleUsers", as: "users" });
+    User.belongsToMany(Role, { through: "RoleUsers", as: "roles" });
   }
 }
 

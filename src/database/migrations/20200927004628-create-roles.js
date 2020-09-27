@@ -2,14 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-
-    const RoleTable = await queryInterface.createTable("Role", {
+    const RoleTable = await queryInterface.createTable("Roles", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -36,13 +29,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-
-    return await queryInterface.dropTable("Role");
+    return await queryInterface.dropTable("Roles");
   },
 };

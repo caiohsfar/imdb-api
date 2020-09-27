@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return await queryInterface.bulkInsert("Movie", [
+    return await queryInterface.bulkInsert("Movies", [
       {
         name: "Interstellar",
         voteAvg: 4.0,
@@ -15,6 +15,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.bulkDelete("Movie", null, {});
+    return await queryInterface.bulkDelete("Movies", null, {});
   },
 };

@@ -18,7 +18,7 @@ RoleUser.init(
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    user_id: {
+    userId: {
       type: Sequelize.INTEGER,
       references: {
         model: User,
@@ -26,7 +26,7 @@ RoleUser.init(
       },
     },
 
-    role_id: {
+    roleId: {
       type: Sequelize.INTEGER,
       references: {
         model: Role,
@@ -35,7 +35,7 @@ RoleUser.init(
     },
   },
   {
-    sequelize: database.connection,
+    sequelize: database,
   }
 );
 

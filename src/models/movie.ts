@@ -22,7 +22,7 @@ Movie.init(
     description: Sequelize.STRING,
   },
   {
-    sequelize: database.connection,
+    sequelize: database,
   }
 );
 
