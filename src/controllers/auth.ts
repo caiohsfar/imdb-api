@@ -21,7 +21,9 @@ export default class AuthController {
     const trx = await database.transaction();
 
     try {
-      const user = await User.findOne({ where: { email: req.body?.email } });
+      const user = await User.findOne({
+        where: { email: req.body?.email, active: true },
+      });
       if (user) {
         return res
           .status(400)
@@ -61,7 +63,7 @@ export default class AuthController {
     const { email, password } = req.body;
 
     const user = await User.findOne({
-      where: { email: email },
+      where: { email, active: true },
       include: [
         {
           model: Role,
@@ -72,13 +74,10 @@ export default class AuthController {
     });
 
     if (!user) {
-      return res.status(404).send({ message: "User Not found." });
+      return res.status(400).send({ message: "User Not found." });
     }
 
-    var passwordIsValid = bcrypt.compareSync(
-      req.body.password,
-      user.passwordHash
-    );
+    var passwordIsValid = bcrypt.compareSync(password, user.passwordHash);
 
     if (!passwordIsValid) {
       return res.status(401).send({

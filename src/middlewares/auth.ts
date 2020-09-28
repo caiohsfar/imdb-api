@@ -38,7 +38,9 @@ export default class AuthMiddleware {
     next: NextFunction
   ) {
     try {
-      const user = await User.findOne({ where: { email: req.body?.email } });
+      const user = await User.findOne({
+        where: { email: req.body?.email },
+      });
       if (user) {
         return res
           .status(400)
@@ -55,8 +57,33 @@ export default class AuthMiddleware {
   public static async isAdmin(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.params;
+      const user = await User.findOne({
+        where: { id: userId, active: true },
+        include: [{ model: Role, as: "roles", attributes: ["name"] }],
+      });
+
+      if (!user) {
+        return res.status(400).send({ message: "User not found!" });
+      }
+
+      const filtered = user.roles.filter((role: Role) => role.name == "admin");
+
+      if (filtered.length === 0) {
+        return res.status(400).send({ message: "This user is not an admin" });
+      }
+
+      next();
+    } catch (err) {
+      console.error(err);
+      res.send(500).send({ message: "Something went wrong!" });
+    }
+  }
+
+  public static async isUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.params;
       const user = User.findOne({
-        where: { id: userId },
+        where: { id: userId, active: true },
         include: [{ model: Role, attributes: ["name"] }],
       });
 
@@ -64,9 +91,11 @@ export default class AuthMiddleware {
         return res.status(400).send({ message: "User not found!" });
       }
 
-      const filtered = user.roles.filter((role: any) => role.name == "admin");
+      const filtered = user.roles.filter((role: any) => role.name == "user");
       if (filtered.length === 0) {
-        return res.send(400).send({ message: "This user is not an admin" });
+        return res
+          .send(400)
+          .send({ message: "This user is not part of the user role" });
       }
 
       next();
