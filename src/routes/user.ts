@@ -6,7 +6,7 @@ const usersRouter = express.Router();
 
 const usersController = new UsersController();
 
-usersRouter.put("/update/:userId", AuthMiddleware.isAdmin, (req, res) =>
+usersRouter.put("/update/:userId", AuthMiddleware.verifyToken, (req, res) =>
   usersController.update(req, res)
 );
 usersRouter.put("/delete/:userId", AuthMiddleware.verifyToken, (req, res) =>

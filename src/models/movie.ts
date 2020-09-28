@@ -4,8 +4,6 @@ import database from "../database/connection";
 class Movie extends Model {
   public id!: number;
 
-  public voteAvg!: number;
-
   public name!: string;
 
   public description!: string;
@@ -18,7 +16,6 @@ class Movie extends Model {
 Movie.init(
   {
     name: Sequelize.STRING,
-    voteAvg: Sequelize.FLOAT,
     description: Sequelize.STRING,
   },
   {

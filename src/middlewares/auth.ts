@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import ROLES from "../constants/roles";
 import User from "../models/user";
-import database from "../database/connection";
 import Role from "../models/role";
-import RoleUser from "../models/role_user";
 require("dotenv").config();
 var jwt = require("jsonwebtoken");
 
@@ -75,16 +73,16 @@ export default class AuthMiddleware {
       next();
     } catch (err) {
       console.error(err);
-      res.send(500).send({ message: "Something went wrong!" });
+      res.status(500).send({ message: "Something went wrong!" });
     }
   }
 
   public static async isUser(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.params;
-      const user = User.findOne({
+      const user = await User.findOne({
         where: { id: userId, active: true },
-        include: [{ model: Role, attributes: ["name"] }],
+        include: [{ model: Role, attributes: ["name"], as: "roles" }],
       });
 
       if (!user) {
@@ -97,18 +95,19 @@ export default class AuthMiddleware {
           .send(400)
           .send({ message: "This user is not part of the user role" });
       }
-
       next();
     } catch (err) {
-      res.send(500).send({ message: "Something went wrong!" });
+      res.status(500).send({ message: "Something went wrong!" });
       console.error(err);
     }
   }
 
   public static verifyToken(req: Request, res: Response, next: NextFunction) {
-    let token = req.headers["x-access-token"];
+    let token = req.headers["authorization"];
 
-    if (!token) {
+    if (token && token.startsWith("Bearer ")) {
+      token = token.slice(7, token.length).trimLeft();
+    } else if (!token) {
       return res.status(403).send({ message: "No token provided!" });
     }
 

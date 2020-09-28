@@ -2,20 +2,36 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const UserRoleTable = await queryInterface.createTable("Movies", {
+    const RatingsTable = await queryInterface.createTable("Ratings", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      rating: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
-      description: {
+      userId: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Users",
+          },
+          key: "id",
+        },
+      },
+      movieId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "Movies",
+          },
+          key: "id",
+        },
       },
       createdAt: {
         allowNull: false,
@@ -29,10 +45,10 @@ module.exports = {
       },
     });
 
-    return UserRoleTable;
+    return RatingsTable;
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.dropTable("Movies");
+    return await queryInterface.dropTable("Ratings");
   },
 };

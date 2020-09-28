@@ -1,10 +1,9 @@
 import Sequelize, { Model } from "sequelize";
 import bcrypt from "bcryptjs";
 import database from "../database/connection";
-import Role from "./role";
-import RoleUser from "../models/role_user";
 
 class User extends Model {
+  [x: string]: any;
   public id!: number;
 
   public name!: string;

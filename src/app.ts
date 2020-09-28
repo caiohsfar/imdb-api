@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import routes from "./routes";
 import Role from "./models/role";
 import User from "./models/user";
+import Rating from "./models/rating";
+import Movie from "./models/movie";
 
 class App {
   public server: express.Application;
@@ -27,6 +29,10 @@ class App {
   private setupDatabaseRelations(): void {
     Role.belongsToMany(User, { through: "RoleUsers", as: "users" });
     User.belongsToMany(Role, { through: "RoleUsers", as: "roles" });
+    User.hasMany(Rating, { as: "ratings" });
+    Movie.hasMany(Rating, { as: "ratings" });
+    Rating.belongsTo(User);
+    Rating.belongsTo(Movie);
   }
 }
 

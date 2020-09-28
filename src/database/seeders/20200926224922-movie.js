@@ -5,7 +5,6 @@ module.exports = {
     return await queryInterface.bulkInsert("Movies", [
       {
         name: "Interstellar",
-        voteAvg: 4.0,
         description:
           "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
         createdAt: new Date(),

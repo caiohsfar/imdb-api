@@ -15,13 +15,14 @@ export default class UserController {
     const body = req.body;
 
     try {
-      const updatedUser = await User.update(body, {
+      await User.update(body, {
         where: { id: userId, active: true },
       });
 
-      res.status(200).json(updatedUser);
+      res.status(200).json({ updated: true });
     } catch (err) {
       console.error(err);
+      this.logger.error(err);
       res.status(500).send({ message: "Failed to update user!" });
     }
   }
@@ -40,6 +41,7 @@ export default class UserController {
       res.status(200).json({ message: "User deleted successfully. " });
     } catch (err) {
       console.error(err);
+      this.logger.error(err);
       res.status(500).send({ message: "Failed to delete user!" });
     }
   }

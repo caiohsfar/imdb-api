@@ -11,6 +11,14 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: "Caio Copia",
+        passwordHash: "a-hash",
+        active: true,
+        email: "caio-copia@gmail.com",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
