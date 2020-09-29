@@ -5,6 +5,12 @@ import Movie from "../models/movie";
 import User from "../models/user";
 import sequelize from "../database/connection";
 import Rating from "../models/rating";
+import { Op } from "sequelize";
+
+import {
+  concatArrayWithCommaSep,
+  getArrayFromStringSeparatedWithComma,
+} from "../utils";
 
 export default class MovieController {
   private logger: log4js.Logger;
@@ -14,13 +20,27 @@ export default class MovieController {
   }
 
   public async index(req: Request, res: Response) {
+    const {
+      query: { name, actors, genders, director },
+    } = req;
+
     try {
       const movies = await Movie.findAll({
         subQuery: false,
 
+        where: {
+          name: { [Op.like]: `%${name ? name : ""}%` },
+          actors: { [Op.like]: `%${actors ? actors : ""}%` },
+          genders: { [Op.like]: `%${genders ? genders : ""}%` },
+          director: { [Op.like]: `%${director ? director : ""}%` },
+        },
+
         attributes: [
           "id",
           "name",
+          "genders",
+          "actors",
+          "director",
           "description",
           "createdAt",
           "updatedAt",
@@ -44,7 +64,16 @@ export default class MovieController {
           },
         ],
 
-        group: ["id", "name", "description", "createdAt", "updatedAt"],
+        group: [
+          "id",
+          "name",
+          "genders",
+          "actors",
+          "director",
+          "description",
+          "createdAt",
+          "updatedAt",
+        ],
       });
 
       res.status(200).json(movies);
@@ -56,8 +85,16 @@ export default class MovieController {
   }
 
   public async create(req: Request, res: Response) {
+    const { name, description, genders, actors, director } = req.body;
+
     try {
-      await Movie.create(req.body);
+      await Movie.create({
+        name,
+        actors,
+        genders,
+        description,
+        director,
+      });
       res.status(201).json({ message: "Movie created successfully" });
     } catch (err) {
       this.logger.error(err);

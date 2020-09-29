@@ -8,6 +8,12 @@ class Movie extends Model {
 
   public description!: string;
 
+  public director!: string;
+
+  public actors!: string;
+
+  public genders!: string;
+
   public readonly createdAt!: Date;
 
   public readonly updatedAt!: Date;
@@ -17,6 +23,9 @@ Movie.init(
   {
     name: Sequelize.STRING,
     description: Sequelize.STRING,
+    director: Sequelize.STRING,
+    actors: Sequelize.STRING,
+    genders: Sequelize.STRING,
   },
   {
     sequelize: database,

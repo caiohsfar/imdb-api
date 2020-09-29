@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const UserRoleTable = await queryInterface.createTable("Movies", {
+    const MoviesTable = await queryInterface.createTable("Movies", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,6 +10,18 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      genders: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      actors: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      director: {
         allowNull: false,
         type: Sequelize.STRING,
       },
@@ -29,7 +41,7 @@ module.exports = {
       },
     });
 
-    return UserRoleTable;
+    return MoviesTable;
   },
 
   down: async (queryInterface, Sequelize) => {
